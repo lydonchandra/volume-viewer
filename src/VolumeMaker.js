@@ -12,14 +12,14 @@ const VolumeMaker = {};
  * @param {function} sdFunc A function f(x,y,z) that returns a distance. f < 0 will be the interior of the volume, and f>=0 will be outside.
  */
 VolumeMaker.createVolume = function(vx, vy, vz, sdFunc) {
-  var data = new Uint8Array(vx * vy * vz).fill(0);
-  var cx = vx / 2;
-  var cy = vy / 2;
-  var cz = vz / 2;
-  var offset, px, py, pz;
-  for (var i = 0; i < vz; ++i) {
-    for (var j = 0; j < vy; ++j) {
-      for (var k = 0; k < vx; ++k) {
+  const data = new Uint8Array(vx * vy * vz).fill(0);
+  const cx = vx / 2;
+  const cy = vy / 2;
+  const cz = vz / 2;
+  let offset, px, py, pz;
+  for (let i = 0; i < vz; ++i) {
+    for (let j = 0; j < vy; ++j) {
+      for (let k = 0; k < vx; ++k) {
         offset = i * (vx * vy) + j * vx + k;
         px = k - cx;
         py = j - cy;
@@ -57,7 +57,7 @@ VolumeMaker.createSphere = function(vx, vy, vz, radius) {
  * @param {number} hy depth of cap (?)
  */
 VolumeMaker.createCylinder = function(vx, vy, vz, hx, hy) {
-  var dx, dy, mdx, mdy;
+  let dx, dy, mdx, mdy;
   return VolumeMaker.createVolume(vx, vy, vz, (px, py, pz) => {
     dx = Math.abs(Math.sqrt(px * px + pz * pz)) - hx;
     dy = Math.abs(py) - hy;

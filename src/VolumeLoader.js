@@ -47,27 +47,27 @@ VolumeLoader.loadVolumeAtlasData = function(volume, imageArray, callback) {
       return function(event) {
         //console.log("GOT ch " + me.src);
         // extract pixels by drawing to canvas
-        var canvas = document.createElement("canvas");
+        const canvas = document.createElement("canvas");
         // nice thing about this is i could downsample here
-        var w = Math.floor(event.target.naturalWidth);
-        var h = Math.floor(event.target.naturalHeight);
+        const w = Math.floor(event.target.naturalWidth);
+        const h = Math.floor(event.target.naturalHeight);
         canvas.setAttribute("width", w);
         canvas.setAttribute("height", h);
-        var ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
         ctx.globalCompositeOperation = "copy";
         ctx.globalAlpha = 1.0;
         ctx.drawImage(event.target, 0, 0, w, h);
         // getImageData returns rgba.
         // optimize: collapse rgba to single channel arrays
-        var iData = ctx.getImageData(0, 0, w, h);
+        const iData = ctx.getImageData(0, 0, w, h);
 
-        var channelsBits = [];
+        const channelsBits = [];
         // allocate channels in batch
         for (let ch = 0; ch < Math.min(thisbatch.length, 4); ++ch) {
           channelsBits.push(new Uint8Array(w * h));
         }
         // extract the data
-        for (var j = 0; j < Math.min(thisbatch.length, 4); ++j) {
+        for (let j = 0; j < Math.min(thisbatch.length, 4); ++j) {
           for (let px = 0; px < w * h; px++) {
             channelsBits[j][px] = iData.data[px * 4 + j];
           }

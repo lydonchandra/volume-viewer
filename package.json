@@ -18,6 +18,7 @@
     "clean": "rimraf es/",
     "format": "prettier --write src/**/*.js",
     "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "dev-package": "webpack --config webpack.dev.js",
     "react-example": "webpack-dev-server --config react-example/webpack.react.js",
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore --ext .jsx --ext .js ./",
     "test": "mocha --require @babel/register src/**/test/*.js",
@@ -29,12 +30,14 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.11.2",
     "three": "^0.112.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.11.5",

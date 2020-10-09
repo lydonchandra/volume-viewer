@@ -8,9 +8,9 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   entry: ["./public/index.js"],
   output: {
-    path: path.resolve(__dirname, "volumeviewer"),
+    path: path.resolve(__dirname, "dist"),
     filename: "volume-viewer-ui.bundle.js",
-    publicPath: "/volumeviewer/",
+    publicPath: ".",
   },
   devtool: "cheap-module-source-map",
   devServer: {
