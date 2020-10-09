@@ -3,5 +3,6 @@ src/MarchingCubes.js
 src/NaiveSurfaceNets.js
 docs/
 es/
+dist/
 webpack.*.js
 babel.config.js

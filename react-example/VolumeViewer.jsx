@@ -48,7 +48,7 @@ export class VolumeViewer extends React.Component {
                 this.gui = setupGui(this.view3D);
                 showChannelUI(aimg, this.view3D, this.gui);
             }
-            
+
             )
             .catch(console.error);
     }

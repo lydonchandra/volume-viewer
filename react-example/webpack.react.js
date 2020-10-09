@@ -13,7 +13,7 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     publicPath: "/volumeviewer/",
-    openPage: "volumeviewer/",
+    openPage: "react-example/",
     port: 9030,
   },
   entry: {
