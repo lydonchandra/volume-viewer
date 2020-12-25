@@ -865,7 +865,11 @@ function main() {
 
   const loadTestData = true;
   if (loadTestData) {
-    fetchImage("AICS-12_881_atlas.json");
+    // fetchImage("AICS-10_5_5.ome.tif_atlas.json");
+    fetchImage("AICS-7_0_1.ome_atlas.json");
+    // fetchImage("AICS-11_1301.ome_atlas.json");
+    // fetchImage("AICS-10_11_1.ome_atlas.json");
+    // fetchImage("AICS-12_881_atlas.json");
   } else {
     const volumeinfo = createTestVolume();
     loadImageData(volumeinfo.imgdata, volumeinfo.volumedata);

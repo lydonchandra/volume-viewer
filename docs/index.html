@@ -129,16 +129,6 @@
               
                 
                 <li><a
-                  href='#lut'
-                  class="">
-                  Lut
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#histogram'
                   class=" toggle-sibling">
                   Histogram
@@ -215,19 +205,9 @@
               
                 
                 <li><a
-                  href='#volumechanneldisplayoptions'
+                  href='#lut'
                   class="">
-                  VolumeChannelDisplayOptions
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#volumedisplayoptions'
-                  class="">
-                  VolumeDisplayOptions
+                  Lut
                   
                 </a>
                 
@@ -504,6 +484,26 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#volumechanneldisplayoptions'
+                  class="">
+                  VolumeChannelDisplayOptions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#volumedisplayoptions'
+                  class="">
+                  VolumeDisplayOptions
+                  
+                </a>
                 
                 </li>
               
@@ -1445,78 +1445,6 @@ as requests arrive, the callback will be called per image, not per channel
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='lut'>
-      Lut
-    </h3>
-    
-    
-  </div>
-  
-
-  
-    <div class='pre p1 fill-light mt0'>Lut</div>
-  
-    <p>
-      Type:
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>lut</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : 256*4 element lookup table as array (maps scalar intensity to a rgb color plus alpha)
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>controlPoints</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#controlpoint">ControlPoint</a>>)</code>
-          
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='histogram'>
       Histogram
     </h3>
@@ -2173,17 +2101,16 @@ as requests arrive, the callback will be called per image, not per channel
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='volumechanneldisplayoptions'>
-      VolumeChannelDisplayOptions
+    <h3 class='fl m0' id='lut'>
+      Lut
     </h3>
     
     
   </div>
   
 
-  <p>Provide options to control the visual appearance of a Volume</p>
-
-    <div class='pre p1 fill-light mt0'>VolumeChannelDisplayOptions</div>
+  
+    <div class='pre p1 fill-light mt0'>Lut</div>
   
     <p>
       Type:
@@ -2206,37 +2133,15 @@ as requests arrive, the callback will be called per image, not per channel
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>enabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : array of boolean per channel
+          <span class='code bold'>lut</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : 256*4 element lookup table as array (maps scalar intensity to a rgb color plus alpha)
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>glossiness</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : array of float per channel
-
+          <span class='code bold'>controlPoints</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#controlpoint">ControlPoint</a>>)</code>
           
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>isosurfaceEnabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : array of boolean per channel
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>isovalue</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : array of number per channel
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>isosurfaceOpacity</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : array of number per channel
-
           
         </div>
       
@@ -2249,176 +2154,6 @@ as requests arrive, the callback will be called per image, not per channel
 
   
 
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">let</span> options = {
-};</pre>
-    
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='volumedisplayoptions'>
-      VolumeDisplayOptions
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Provide options to control the visual appearance of a Volume</p>
-
-    <div class='pre p1 fill-light mt0'>VolumeDisplayOptions</div>
-  
-    <p>
-      Type:
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>channels</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#volumechanneldisplayoptions">VolumeChannelDisplayOptions</a>>)</code>
-          : array of channel display options
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>density</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>translation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : xyz
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>rotation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : xyz angles in radians
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>maskChannelIndex</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>maskAlpha</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>clipBounds</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : [xmin, xmax, ymin, ymax, zmin, zmax]
- all range from 0 to 1 as a percentage of the volume on that axis
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>scale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : xyz voxel size scaling
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>maxProjection</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : true or false (ray marching)
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>renderMode</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : 0 for raymarch, 1 for pathtrace
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>shadingMethod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : 0 for phase, 1 for brdf, 2 for hybrid (path tracer)
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>gamma</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
-          : [min, max, scale]
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>primaryRayStepSize</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : in voxels
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>secondaryRayStepSize</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : in voxels
-
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">let</span> options = {
-};</pre>
-    
   
 
   
@@ -5562,6 +5297,271 @@ Calling this allows the rendering to compensate for changes in thickness in orth
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='volumechanneldisplayoptions'>
+      VolumeChannelDisplayOptions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Provide options to control the visual appearance of a Volume</p>
+
+    <div class='pre p1 fill-light mt0'>VolumeChannelDisplayOptions</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>enabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : array of boolean per channel
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>glossiness</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : array of float per channel
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isosurfaceEnabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : array of boolean per channel
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isovalue</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : array of number per channel
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isosurfaceOpacity</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : array of number per channel
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">let</span> options = {
+};</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='volumedisplayoptions'>
+      VolumeDisplayOptions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Provide options to control the visual appearance of a Volume</p>
+
+    <div class='pre p1 fill-light mt0'>VolumeDisplayOptions</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>channels</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#volumechanneldisplayoptions">VolumeChannelDisplayOptions</a>>)</code>
+          : array of channel display options
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>density</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>translation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : xyz
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>rotation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : xyz angles in radians
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>maskChannelIndex</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>maskAlpha</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>clipBounds</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : [xmin, xmax, ymin, ymax, zmin, zmax]
+ all range from 0 to 1 as a percentage of the volume on that axis
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>scale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : xyz voxel size scaling
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>maxProjection</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : true or false (ray marching)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>renderMode</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : 0 for raymarch, 1 for pathtrace
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>shadingMethod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : 0 for phase, 1 for brdf, 2 for hybrid (path tracer)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>gamma</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+          : [min, max, scale]
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>primaryRayStepSize</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : in voxels
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>secondaryRayStepSize</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : in voxels
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">let</span> options = {
+};</pre>
+    
+  
+
+  
 
   
 

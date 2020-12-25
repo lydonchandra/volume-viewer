@@ -1,0 +1,53 @@
+{
+  "width": 314,
+  "height": 508,
+  "channels": 9,
+  "channel_names": [
+    "DRAQ5",
+    "EGFP",
+    "Hoechst 33258",
+    "TL Brightfield",
+    "SEG_STRUCT",
+    "SEG_Memb",
+    "SEG_DNA",
+    "CON_Memb",
+    "CON_DNA"
+  ],
+  "rows": 6,
+  "cols": 9,
+  "tiles": 51,
+  "tile_width": 227,
+  "tile_height": 341,
+  "atlas_width": 2043,
+  "atlas_height": 2046,
+  "pixel_size_x": 0.065,
+  "pixel_size_y": 0.065,
+  "pixel_size_z": 0.29,
+  "images": [
+    {
+      "name": "AICS-7_0_1.ome_atlas_0.png",
+      "channels": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "AICS-7_0_1.ome_atlas_1.png",
+      "channels": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "AICS-7_0_1.ome_atlas_2.png",
+      "channels": [
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "name": "AICS-7_0_1.ome"
+}

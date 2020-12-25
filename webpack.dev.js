@@ -12,6 +12,9 @@ module.exports = {
     filename: "volume-viewer-ui.bundle.js",
     publicPath: ".",
   },
+  optimization: {
+    minimize: false
+  },
   devtool: "cheap-module-source-map",
   devServer: {
     publicPath: "/volumeviewer/",
