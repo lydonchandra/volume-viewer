@@ -782,67 +782,76 @@ function createTestVolume() {
 
 function main() {
   let el = document.getElementById("volume-viewer");
+  let winHeight = window.innerHeight;
+  let winWidth = window.innerWidth;
+
+  const bufferWidth = 15;
+  el.style.width = winWidth - bufferWidth + "px";
+
+  const toolHeight = 130;
+  el.style.height = winHeight - toolHeight + "px";
+
   view3D = new View3d(el);
 
-  var xbtn = document.getElementById("X");
+  const xbtn = document.getElementById( "X" );
   xbtn.addEventListener("click", () => {
     view3D.setCameraMode("X");
   });
-  var ybtn = document.getElementById("Y");
+  const ybtn = document.getElementById("Y");
   ybtn.addEventListener("click", () => {
     view3D.setCameraMode("Y");
   });
-  var zbtn = document.getElementById("Z");
+  const zbtn = document.getElementById("Z");
   zbtn.addEventListener("click", () => {
     view3D.setCameraMode("Z");
   });
-  var d3btn = document.getElementById("3D");
+  const d3btn = document.getElementById("3D");
   d3btn.addEventListener("click", () => {
     view3D.setCameraMode("3D");
   });
-  var rotbtn = document.getElementById("rotbtn");
+  const rotbtn = document.getElementById("rotbtn");
   rotbtn.addEventListener("click", () => {
     myState.isTurntable = !myState.isTurntable;
     view3D.setAutoRotate(myState.isTurntable);
   });
-  var axisbtn = document.getElementById("axisbtn");
+  const axisbtn = document.getElementById("axisbtn");
   axisbtn.addEventListener("click", () => {
     myState.isAxisShowing = !myState.isAxisShowing;
     view3D.setShowAxis(myState.isAxisShowing);
   });
-  var flipxbtn = document.getElementById("flipxbtn");
+  const flipxbtn = document.getElementById("flipxbtn");
   flipxbtn.addEventListener("click", () => {
     myState.flipX *= -1;
     view3D.setFlipVolume(myState.volume, myState.flipX, myState.flipY, myState.flipZ);
   });
-  var flipybtn = document.getElementById("flipybtn");
+  const flipybtn = document.getElementById("flipybtn");
   flipybtn.addEventListener("click", () => {
     myState.flipY *= -1;
     view3D.setFlipVolume(myState.volume, myState.flipX, myState.flipY, myState.flipZ);
   });
-  var flipzbtn = document.getElementById("flipzbtn");
+  const flipzbtn = document.getElementById("flipzbtn");
   flipzbtn.addEventListener("click", () => {
     myState.flipZ *= -1;
     view3D.setFlipVolume(myState.volume, myState.flipX, myState.flipY, myState.flipZ);
   });
 
-  var alignbtn = document.getElementById("xfbtn");
+  const alignbtn = document.getElementById("xfbtn");
   alignbtn.addEventListener("click", () => {
     myState.isAligned = !myState.isAligned;
     view3D.setVolumeTranslation(myState.volume, myState.isAligned ? myState.volume.getTranslation() : [0, 0, 0]);
     view3D.setVolumeRotation(myState.volume, myState.isAligned ? myState.volume.getRotation() : [0, 0, 0]);
   });
-  var resetcambtn = document.getElementById("resetcambtn");
+  const resetcambtn = document.getElementById("resetcambtn");
   resetcambtn.addEventListener("click", () => {
     view3D.resetCamera();
   });
-  var counterspan = document.getElementById("counter");
+  const counterspan = document.getElementById("counter");
   view3D.setRenderUpdateListener(count => {
     counterspan.innerHTML = "" + count;
   });
 
   if (view3D.canvas3d.hasWebGL2) {
-    var ptbtn = document.getElementById("ptbtn");
+    const ptbtn = document.getElementById("ptbtn");
     ptbtn.disabled = false;
     ptbtn.style.disabled = false;
     ptbtn.addEventListener("click", () => {
@@ -851,7 +860,7 @@ function main() {
       view3D.updateLights(myState.lights);
     });
   }
-  var screenshotbtn = document.getElementById("screenshotbtn");
+  const screenshotbtn = document.getElementById("screenshotbtn");
   screenshotbtn.addEventListener("click", () => {
     view3D.capture(dataurl => {
       const anch = document.createElement("a");
