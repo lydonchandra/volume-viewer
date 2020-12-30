@@ -20,6 +20,7 @@ module.exports = {
     publicPath: "/volumeviewer/",
     openPage: "volumeviewer/",
     port: 9020,
+    host: '0.0.0.0'
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -27,7 +28,10 @@ module.exports = {
       template: "./public/index.html",
     }),
     new webpack.DefinePlugin({
-      APP_VERSION: JSON.stringify(require("./package.json").version),
+      APP_VERSION: JSON.stringify(require("./package.json").version)
+      , BASE_URL: process.env.USE_LOCAL_TIFF
+                    ? JSON.stringify(".")  //local tiff in public folder
+                    : JSON.stringify("https://omecdn.azureedge.net/atlas") //otherwise look up in cdn
     }),
     new CopyWebpackPlugin({ patterns: ["public"] }),
   ],

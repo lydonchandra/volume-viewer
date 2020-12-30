@@ -132,6 +132,10 @@ function setupGui() {
   gui = new dat.GUI();
   //gui = new dat.GUI({autoPlace:false, width:200});
 
+  let obj = { tiff: 'AICS-10_5_13.ome.tif'}
+  let tiffDropdown = gui.add( obj, 'tiff', ['AICS-10_5_13.ome.tif', 'AICS-10_5_14.ome.tif'] )
+  // let omeFolder = gui.addFolder('Ome.tiff');
+  // omeFolder.add(ometiffs, 'name')
   gui
     .add(myState, "density")
     .max(100.0)
@@ -722,18 +726,24 @@ function loadImageData(jsondata, volumedata) {
   return vol;
 }
 
-function fetchImage(url) {
-  fetch(url)
+function fetchImage(atlasUrl, baseUrl) {
+
+  fetch(atlasUrl)
     .then(function(response) {
       return response.json();
     })
-    .then(function(myJson) {
-      // if you need to adjust image paths prior to download,
-      // now is the time to do it:
-      // myJson.images.forEach(function(element) {
-      //     element.name = myURLprefix + element.name;
-      // });
-      loadImageData(myJson);
+    .then(function(atlasJson) {
+
+      if(baseUrl) {
+
+        // if you need to adjust image paths prior to download,
+        atlasJson.images.forEach( ( image ) => {
+          image.name = `${ baseUrl }/${ image.name }`
+        } )
+      }
+
+      let volumeData = null;
+      loadImageData(atlasJson, volumeData);
     });
 }
 
@@ -788,7 +798,7 @@ function main() {
   const bufferWidth = 15;
   el.style.width = winWidth - bufferWidth + "px";
 
-  const toolHeight = 130;
+  const toolHeight = 2*130;
   el.style.height = winHeight - toolHeight + "px";
 
   view3D = new View3d(el);
@@ -871,14 +881,41 @@ function main() {
   });
 
   setupGui();
-
+  // alert( `${window.innerWidth}, ${window.innerHeight}`)
   const loadTestData = true;
+
+  // let baseUrl = "https://omecdn.azureedge.net/atlas"
+  //let baseUrl = "."
+  let baseUrl = BASE_URL;
+
+  let atlasDefUrl = `${baseUrl}/atlas-def.json`
+
   if (loadTestData) {
-    // fetchImage("AICS-10_5_5.ome.tif_atlas.json");
-    fetchImage("AICS-7_0_1.ome_atlas.json");
-    // fetchImage("AICS-11_1301.ome_atlas.json");
-    // fetchImage("AICS-10_11_1.ome_atlas.json");
-    // fetchImage("AICS-12_881_atlas.json");
+
+    fetch( atlasDefUrl )
+      .then( (response) => {
+
+        return response.json();
+
+      })
+      .then( (atlasDefJson) => {
+
+        let fullpathFilenames = [];
+        atlasDefJson.filenames.forEach( (filename) => {
+          let fullpath = `${baseUrl}/${filename}`;
+          fullpathFilenames.push( fullpath );
+        });
+        atlasDefJson.filenames = fullpathFilenames;
+
+        let atlasFilename = `${atlasDefJson.filenames[ 0 ]}`;
+
+        fetchImage( atlasFilename, baseUrl );
+        // fetchImage("AICS-10_5_5.ome.tif_atlas.json");
+
+      });
+
+
+
   } else {
     const volumeinfo = createTestVolume();
     loadImageData(volumeinfo.imgdata, volumeinfo.volumedata);

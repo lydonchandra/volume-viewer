@@ -17,7 +17,7 @@
     "build-demo": "webpack --config webpack.demo.js",
     "clean": "rimraf es/",
     "format": "prettier --write src/**/*.js",
-    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "dev": "cross-env USE_LOCAL_TIFF=true webpack-dev-server --open --config webpack.dev.js",
     "dev-package": "webpack --config webpack.dev.js",
     "react-example": "webpack-dev-server --config react-example/webpack.react.js",
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore --ext .jsx --ext .js ./",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.11.2",
+    "cross-env": "^7.0.3",
     "three": "^0.112.1"
   },
   "devDependencies": {
