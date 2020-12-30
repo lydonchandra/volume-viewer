@@ -13,7 +13,7 @@ module.exports = {
     publicPath: ".",
   },
   optimization: {
-    minimize: false
+    minimize: true
   },
   devtool: "cheap-module-source-map",
   devServer: {
