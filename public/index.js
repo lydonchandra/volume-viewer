@@ -127,15 +127,11 @@ function initLights() {
 
 let gui = null;
 
-function setupGui() {
+function setupGui( atlasDefUrl, baseUrl ) {
   // eslint-disable-next-line no-undef
   gui = new dat.GUI();
   //gui = new dat.GUI({autoPlace:false, width:200});
 
-  let obj = { tiff: 'AICS-10_5_13.ome.tif'}
-  let tiffDropdown = gui.add( obj, 'tiff', ['AICS-10_5_13.ome.tif', 'AICS-10_5_14.ome.tif'] )
-  // let omeFolder = gui.addFolder('Ome.tiff');
-  // omeFolder.add(ometiffs, 'name')
   gui
     .add(myState, "density")
     .max(100.0)
@@ -444,6 +440,30 @@ function setupGui() {
     });
 
   initLights();
+
+  fetch( atlasDefUrl )
+    .then( (response) => {
+
+      return response.json();
+
+    })
+    .then( (atlasDefJson) => {
+
+      let fullpathFilenames = [];
+      atlasDefJson.filenames.forEach( (filename) => {
+        let fullpath = `${baseUrl}/${filename}`;
+        fullpathFilenames.push( fullpath );
+      });
+      atlasDefJson.filenames = fullpathFilenames;
+
+      gui
+        .add( atlasDefJson, 'filenames', atlasDefJson.filenames )
+        .onChange( (value) => {
+          fetchImage(value, baseUrl)
+        })
+    })
+
+  return gui;
 }
 
 //eslint-disable-next-line no-undef
@@ -880,15 +900,16 @@ function main() {
     });
   });
 
-  setupGui();
-  // alert( `${window.innerWidth}, ${window.innerHeight}`)
+  //baseUrl is "https://omecdn.azureedge.net/atlas" or "."
+  //eslint-disable-next-line no-undef
+  let baseUrl = BASE_URL;
+  baseUrl = "https://omecdn.azureedge.net/atlas"
+  let atlasDefUrl = `${baseUrl}/atlas-def.json`
+
+  setupGui(atlasDefUrl, baseUrl);
+
   const loadTestData = true;
 
-  // let baseUrl = "https://omecdn.azureedge.net/atlas"
-  //let baseUrl = "."
-  let baseUrl = BASE_URL;
-
-  let atlasDefUrl = `${baseUrl}/atlas-def.json`
 
   if (loadTestData) {
 
@@ -913,8 +934,6 @@ function main() {
         // fetchImage("AICS-10_5_5.ome.tif_atlas.json");
 
       });
-
-
 
   } else {
     const volumeinfo = createTestVolume();
