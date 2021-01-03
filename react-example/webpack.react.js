@@ -15,6 +15,7 @@ module.exports = {
     publicPath: "/volumeviewer/",
     openPage: "react-example/",
     port: 9030,
+    host: "0.0.0.0"
   },
   entry: {
     app: path.resolve(__dirname, "index.jsx"),
