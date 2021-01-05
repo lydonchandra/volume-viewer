@@ -1,14 +1,18 @@
 module.exports = {
     "presets": [
-        ["@babel/preset-env", { "targets": { "chrome": "60" } }]
+        ["@babel/preset-env", {
+            "targets": { "chrome": "70" }
+            , "modules": false
+        }]
     ],
     "env": {
         "es": {
             "presets": [
                 ["@babel/preset-env", {
-                    "modules": false,
-                }],
-            ],
+                    "targets": { "chrome": "70" }
+                    , "modules": false
+                }]
+            ]
         },
     },
     "plugins": [

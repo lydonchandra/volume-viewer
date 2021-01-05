@@ -20,13 +20,22 @@ module.exports = {
   entry: {
     app: path.resolve(__dirname, "index.jsx"),
   },
-  mode: "production",
+  mode: "development",
   module: {
     rules: [
       {
+        test: /\.(obj)$/,
+        use: ["raw-loader?inline=true"],
+      },
+      {
+        test: /\.(png)$/,
+        use: ["url-loader?inline=true"],
+      },
+      {
         test: /\.(js|jsx)$/,
-        include: [path.resolve(__dirname)],
-        exclude: /node_modules/,
+        include: [ path.resolve(__dirname)
+                  , path.resolve(__dirname, '/../src') ],
+        exclude: [ /node_modules/, /test/],
         use: [
           {
             loader: "babel-loader",
@@ -39,7 +48,7 @@ module.exports = {
       {
         test: /Worker\.js$/,
         use: "worker-loader?inline=true",
-      },
+      }
     ],
   },
   output: {
