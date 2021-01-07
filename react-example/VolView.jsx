@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View3d, Volume, VolumeLoader } from "../es";
+import { View3d, Volume, VolumeLoader } from "../src";
 import * as UtilData from "./UtilData";
 
 const initView3D = async (view3D) => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { View3d, Volume, VolumeLoader } from "../es";
+import { View3d, Volume, VolumeLoader } from "../src";
 import { setupGui, showChannelUI } from "./gui-setup";
 export const AICS_CELL_URL =
     "https://s3-us-west-2.amazonaws.com/bisque.allencell.org/v1.4.0/Cell-Viewer_Thumbnails/AICS-11";

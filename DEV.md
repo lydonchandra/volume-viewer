@@ -9,7 +9,7 @@
 - supports ome.tif, .tif, and .czi provided they are self contained z stacks.
 - note: the files will be placed in a temporary "cache" folder which should be periodically cleaned out.
 
-## Deugging React setup
+## Debugging React setup
 This will make a simple react app with the volume viewer installed.
 - make sure node.js is installed
 - make sure aicsimage python lib is installed

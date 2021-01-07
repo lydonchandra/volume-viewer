@@ -1,6 +1,9 @@
 {
   "presets": [
-    "@babel/preset-env",
+    ["@babel/preset-env", {
+        "targets": { "chrome": "70" }
+        , "modules": false
+    }],
     "@babel/preset-react"
   ],
   "env": {
@@ -12,7 +15,10 @@
       ]
     },
     "es": {
-      "presets": [["@babel/preset-env", { "modules": false }]]
+      "presets": [
+        ["@babel/preset-env", { "modules": false, "targets": { "chrome": "70" } }
+        ]
+      ]
     }
   },
   "plugins": [

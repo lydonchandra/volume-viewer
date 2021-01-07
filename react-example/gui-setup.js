@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import { Light, SKY_LIGHT, AREA_LIGHT } from "../es";
+import { Light, SKY_LIGHT, AREA_LIGHT } from "../src";
 
 export const myState = {
   file: "",

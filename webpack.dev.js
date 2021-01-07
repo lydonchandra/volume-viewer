@@ -14,7 +14,8 @@ module.exports = {
   },
   optimization: {
     //very fast for dev, if not minimized
-    minimize: true
+    minimize: true 
+    //, minimize: false
   },
   devtool: "cheap-module-source-map",
   devServer: {
