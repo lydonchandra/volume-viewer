@@ -8,25 +8,22 @@
 
 import { BufferAttribute, BufferGeometry, ImmediateRenderObject } from "three";
 
-var MarchingCubes = function(resolution, material, enableUvs, enableColors, enableNormals, volumeFieldRef) {
-  ImmediateRenderObject.call(this, material);
+class MarchingCubes extends ImmediateRenderObject {
+  constructor(resolution, material, enableUvs, enableColors, enableNormals, volumeFieldRef) {
+    super(material);
+    //ImmediateRenderObject.call(this, material);
 
-  var scope = this;
+    // temp buffers used in polygonize
+    this.vlist = new Float32Array(12 * 3);
+    this.nlist = new Float32Array(12 * 3);
 
-  // temp buffers used in polygonize
+    this.enableUvs = !!enableUvs;
+    this.enableColors = !!enableColors;
+    this.enableNormals = !!enableNormals;
+    this.init(resolution, volumeFieldRef);
+  }
 
-  var vlist = new Float32Array(12 * 3);
-  var nlist = new Float32Array(12 * 3);
-
-  this.enableUvs = !!enableUvs;
-  this.enableColors = !!enableColors;
-  this.enableNormals = !!enableNormals;
-
-  // functions have to be object properties
-  // prototype functions kill performance
-  // (tested and it was 4x slower !!!)
-
-  this.init = function(resolution, volumeFieldRef) {
+  init(resolution, volumeFieldRef) {
     this.dirty = true;
 
     this.resolution = resolution;
@@ -88,93 +85,86 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
     if (this.enableColors) {
       this.colorArray = new Float32Array(this.maxCount * 3);
     }
-  };
+  }
 
-  ///////////////////////
-  // Polygonization
-  ///////////////////////
-
-  function lerp(a, b, t) {
+  lerp(a, b, t) {
     return a + (b - a) * t;
   }
 
-  function VIntX(q, offset, isol, x, y, z, valp1, valp2) {
+  VIntX(q, offset, isol, x, y, z, valp1, valp2) {
     var mu = (isol - valp1) / (valp2 - valp1),
-      nc = scope.normal_cache;
+      nc = this.normal_cache;
 
-    vlist[offset + 0] = x + mu * scope.deltaX * scope.stepSizeX;
-    vlist[offset + 1] = y;
-    vlist[offset + 2] = z;
+    this.vlist[offset + 0] = x + mu * this.deltaX * this.stepSizeX;
+    this.vlist[offset + 1] = y;
+    this.vlist[offset + 2] = z;
 
-    nlist[offset + 0] = lerp(nc[q + 0], nc[q + 3], mu);
-    nlist[offset + 1] = lerp(nc[q + 1], nc[q + 4], mu);
-    nlist[offset + 2] = lerp(nc[q + 2], nc[q + 5], mu);
+    this.nlist[offset + 0] = this.lerp(nc[q + 0], nc[q + 3], mu);
+    this.nlist[offset + 1] = this.lerp(nc[q + 1], nc[q + 4], mu);
+    this.nlist[offset + 2] = this.lerp(nc[q + 2], nc[q + 5], mu);
   }
 
-  function VIntY(q, offset, isol, x, y, z, valp1, valp2) {
+  VIntY(q, offset, isol, x, y, z, valp1, valp2) {
     var mu = (isol - valp1) / (valp2 - valp1),
-      nc = scope.normal_cache;
+      nc = this.normal_cache;
 
-    vlist[offset + 0] = x;
-    vlist[offset + 1] = y + mu * scope.deltaY * scope.stepSizeY;
-    vlist[offset + 2] = z;
+    this.vlist[offset + 0] = x;
+    this.vlist[offset + 1] = y + mu * this.deltaY * this.stepSizeY;
+    this.vlist[offset + 2] = z;
 
-    var q2 = q + scope.yd * 3;
+    var q2 = q + this.yd * 3;
 
-    nlist[offset + 0] = lerp(nc[q + 0], nc[q2 + 0], mu);
-    nlist[offset + 1] = lerp(nc[q + 1], nc[q2 + 1], mu);
-    nlist[offset + 2] = lerp(nc[q + 2], nc[q2 + 2], mu);
+    this.nlist[offset + 0] = this.lerp(nc[q + 0], nc[q2 + 0], mu);
+    this.nlist[offset + 1] = this.lerp(nc[q + 1], nc[q2 + 1], mu);
+    this.nlist[offset + 2] = this.lerp(nc[q + 2], nc[q2 + 2], mu);
   }
 
-  function VIntZ(q, offset, isol, x, y, z, valp1, valp2) {
+  VIntZ(q, offset, isol, x, y, z, valp1, valp2) {
     var mu = (isol - valp1) / (valp2 - valp1),
-      nc = scope.normal_cache;
+      nc = this.normal_cache;
 
-    vlist[offset + 0] = x;
-    vlist[offset + 1] = y;
-    vlist[offset + 2] = z + mu * scope.deltaZ * scope.stepSizeZ;
+    this.vlist[offset + 0] = x;
+    this.vlist[offset + 1] = y;
+    this.vlist[offset + 2] = z + mu * this.deltaZ * this.stepSizeZ;
 
-    var q2 = q + scope.zd * 3;
+    var q2 = q + this.zd * 3;
 
-    nlist[offset + 0] = lerp(nc[q + 0], nc[q2 + 0], mu);
-    nlist[offset + 1] = lerp(nc[q + 1], nc[q2 + 1], mu);
-    nlist[offset + 2] = lerp(nc[q + 2], nc[q2 + 2], mu);
+    this.nlist[offset + 0] = this.lerp(nc[q + 0], nc[q2 + 0], mu);
+    this.nlist[offset + 1] = this.lerp(nc[q + 1], nc[q2 + 1], mu);
+    this.nlist[offset + 2] = this.lerp(nc[q + 2], nc[q2 + 2], mu);
   }
 
-  function compNorm(q) {
+  compNorm(q) {
     var q3 = q * 3;
 
-    if (scope.normal_cache[q3] === 0.0) {
-      scope.normal_cache[q3 + 0] = scope.field[q - 1 * scope.stepSizeX] - scope.field[q + 1 * scope.stepSizeX];
-      scope.normal_cache[q3 + 1] =
-        scope.field[q - scope.yd * scope.stepSizeY] - scope.field[q + scope.yd * scope.stepSizeY];
-      scope.normal_cache[q3 + 2] =
-        scope.field[q - scope.zd * scope.stepSizeZ] - scope.field[q + scope.zd * scope.stepSizeZ];
+    if (this.normal_cache[q3] === 0.0) {
+      this.normal_cache[q3 + 0] = this.field[q - 1 * this.stepSizeX] - this.field[q + 1 * this.stepSizeX];
+      this.normal_cache[q3 + 1] = this.field[q - this.yd * this.stepSizeY] - this.field[q + this.yd * this.stepSizeY];
+      this.normal_cache[q3 + 2] = this.field[q - this.zd * this.stepSizeZ] - this.field[q + this.zd * this.stepSizeZ];
     }
   }
 
   // Returns total number of triangles. Fills triangles.
   // (this is where most of time is spent - it's inner work of O(n3) loop )
-
-  function polygonize(fx, fy, fz, q, isol, renderCallback) {
+  polygonize(fx, fy, fz, q, isol, renderCallback) {
     // cache indices
-    var q1 = q + 1 * scope.stepSizeX,
-      qy = q + scope.yd * scope.stepSizeY,
-      qz = q + scope.zd * scope.stepSizeZ,
-      q1y = q1 + scope.yd * scope.stepSizeY,
-      q1z = q1 + scope.zd * scope.stepSizeZ,
-      qyz = q + scope.yd * scope.stepSizeY + scope.zd * scope.stepSizeZ,
-      q1yz = q1 + scope.yd * scope.stepSizeY + scope.zd * scope.stepSizeZ;
+    var q1 = q + 1 * this.stepSizeX,
+      qy = q + this.yd * this.stepSizeY,
+      qz = q + this.zd * this.stepSizeZ,
+      q1y = q1 + this.yd * this.stepSizeY,
+      q1z = q1 + this.zd * this.stepSizeZ,
+      qyz = q + this.yd * this.stepSizeY + this.zd * this.stepSizeZ,
+      q1yz = q1 + this.yd * this.stepSizeY + this.zd * this.stepSizeZ;
 
     var cubeindex = 0,
-      field0 = scope.field[q],
-      field1 = scope.field[q1],
-      field2 = scope.field[qy],
-      field3 = scope.field[q1y],
-      field4 = scope.field[qz],
-      field5 = scope.field[q1z],
-      field6 = scope.field[qyz],
-      field7 = scope.field[q1yz];
+      field0 = this.field[q],
+      field1 = this.field[q1],
+      field2 = this.field[qy],
+      field3 = this.field[q1y],
+      field4 = this.field[qz],
+      field5 = this.field[q1z],
+      field6 = this.field[qyz],
+      field7 = this.field[q1yz];
 
     if (field0 < isol) cubeindex |= 1;
     if (field1 < isol) cubeindex |= 2;
@@ -190,9 +180,9 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
     var bits = edgeTable[cubeindex];
     if (bits === 0) return 0;
 
-    var dx = scope.deltaX * scope.stepSizeX,
-      dy = scope.deltaY * scope.stepSizeY,
-      dz = scope.deltaZ * scope.stepSizeZ,
+    var dx = this.deltaX * this.stepSizeX,
+      dy = this.deltaY * this.stepSizeY,
+      dz = this.deltaZ * this.stepSizeZ,
       fx2 = fx + dx,
       fy2 = fy + dy,
       fz2 = fz + dz;
@@ -200,79 +190,79 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
     // top of the cube
 
     if (bits & 1) {
-      compNorm(q);
-      compNorm(q1);
-      VIntX(q * 3, 0, isol, fx, fy, fz, field0, field1);
+      this.compNorm(q);
+      this.compNorm(q1);
+      this.VIntX(q * 3, 0, isol, fx, fy, fz, field0, field1);
     }
 
     if (bits & 2) {
-      compNorm(q1);
-      compNorm(q1y);
-      VIntY(q1 * 3, 3, isol, fx2, fy, fz, field1, field3);
+      this.compNorm(q1);
+      this.compNorm(q1y);
+      this.VIntY(q1 * 3, 3, isol, fx2, fy, fz, field1, field3);
     }
 
     if (bits & 4) {
-      compNorm(qy);
-      compNorm(q1y);
-      VIntX(qy * 3, 6, isol, fx, fy2, fz, field2, field3);
+      this.compNorm(qy);
+      this.compNorm(q1y);
+      this.VIntX(qy * 3, 6, isol, fx, fy2, fz, field2, field3);
     }
 
     if (bits & 8) {
-      compNorm(q);
-      compNorm(qy);
-      VIntY(q * 3, 9, isol, fx, fy, fz, field0, field2);
+      this.compNorm(q);
+      this.compNorm(qy);
+      this.VIntY(q * 3, 9, isol, fx, fy, fz, field0, field2);
     }
 
     // bottom of the cube
 
     if (bits & 16) {
-      compNorm(qz);
-      compNorm(q1z);
-      VIntX(qz * 3, 12, isol, fx, fy, fz2, field4, field5);
+      this.compNorm(qz);
+      this.compNorm(q1z);
+      this.VIntX(qz * 3, 12, isol, fx, fy, fz2, field4, field5);
     }
 
     if (bits & 32) {
-      compNorm(q1z);
-      compNorm(q1yz);
-      VIntY(q1z * 3, 15, isol, fx2, fy, fz2, field5, field7);
+      this.compNorm(q1z);
+      this.compNorm(q1yz);
+      this.VIntY(q1z * 3, 15, isol, fx2, fy, fz2, field5, field7);
     }
 
     if (bits & 64) {
-      compNorm(qyz);
-      compNorm(q1yz);
-      VIntX(qyz * 3, 18, isol, fx, fy2, fz2, field6, field7);
+      this.compNorm(qyz);
+      this.compNorm(q1yz);
+      this.VIntX(qyz * 3, 18, isol, fx, fy2, fz2, field6, field7);
     }
 
     if (bits & 128) {
-      compNorm(qz);
-      compNorm(qyz);
-      VIntY(qz * 3, 21, isol, fx, fy, fz2, field4, field6);
+      this.compNorm(qz);
+      this.compNorm(qyz);
+      this.VIntY(qz * 3, 21, isol, fx, fy, fz2, field4, field6);
     }
 
     // vertical lines of the cube
 
     if (bits & 256) {
-      compNorm(q);
-      compNorm(qz);
-      VIntZ(q * 3, 24, isol, fx, fy, fz, field0, field4);
+      this.compNorm(q);
+      this.compNorm(qz);
+      this.VIntZ(q * 3, 24, isol, fx, fy, fz, field0, field4);
     }
 
     if (bits & 512) {
-      compNorm(q1);
-      compNorm(q1z);
-      VIntZ(q1 * 3, 27, isol, fx2, fy, fz, field1, field5);
+      this.compNorm(q1);
+      this.compNorm(q1z);
+      this.VIntZ(q1 * 3, 27, isol, fx2, fy, fz, field1, field5);
     }
 
     if (bits & 1024) {
-      compNorm(q1y);
-      compNorm(q1yz);
-      VIntZ(q1y * 3, 30, isol, fx2, fy2, fz, field3, field7);
+      this.compNorm(q1y);
+      this.compNorm(q1yz);
+      this.VIntZ(q1y * 3, 30, isol, fx2, fy2, fz, field3, field7);
     }
 
     if (bits & 2048) {
-      compNorm(qy);
-      compNorm(qyz);
-      VIntZ(qy * 3, 33, isol, fx, fy2, fz, field2, field6);
+      this.compNorm(qy);
+      this.compNorm(qyz);
+      this.VIntZ(qy * 3, 33, isol, fx, fy2, fz, field2, field6);
     }
 
     cubeindex <<= 4; // re-purpose cubeindex into an offset into triTable
@@ -290,7 +280,7 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
       o2 = o1 + 1;
       o3 = o1 + 2;
 
-      posnormtriv(vlist, nlist, 3 * triTable[o1], 3 * triTable[o2], 3 * triTable[o3], renderCallback);
+      this.posnormtriv(this.vlist, this.nlist, 3 * triTable[o1], 3 * triTable[o2], 3 * triTable[o3], renderCallback);
 
       i += 3;
       numtris++;
@@ -303,100 +293,100 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
   // Immediate render mode simulator
   /////////////////////////////////////
 
-  function posnormtriv(pos, norm, o1, o2, o3, renderCallback) {
-    var c = scope.count * 3;
+  posnormtriv(pos, norm, o1, o2, o3, renderCallback) {
+    var c = this.count * 3;
 
     // positions
 
-    scope.positionArray[c + 0] = pos[o1];
-    scope.positionArray[c + 1] = pos[o1 + 1];
-    scope.positionArray[c + 2] = pos[o1 + 2];
+    this.positionArray[c + 0] = pos[o1];
+    this.positionArray[c + 1] = pos[o1 + 1];
+    this.positionArray[c + 2] = pos[o1 + 2];
 
-    scope.positionArray[c + 3] = pos[o2];
-    scope.positionArray[c + 4] = pos[o2 + 1];
-    scope.positionArray[c + 5] = pos[o2 + 2];
+    this.positionArray[c + 3] = pos[o2];
+    this.positionArray[c + 4] = pos[o2 + 1];
+    this.positionArray[c + 5] = pos[o2 + 2];
 
-    scope.positionArray[c + 6] = pos[o3];
-    scope.positionArray[c + 7] = pos[o3 + 1];
-    scope.positionArray[c + 8] = pos[o3 + 2];
+    this.positionArray[c + 6] = pos[o3];
+    this.positionArray[c + 7] = pos[o3 + 1];
+    this.positionArray[c + 8] = pos[o3 + 2];
 
     // normals
 
-    if (scope.enableNormals) {
-      scope.normalArray[c + 0] = norm[o1];
-      scope.normalArray[c + 1] = norm[o1 + 1];
-      scope.normalArray[c + 2] = norm[o1 + 2];
+    if (this.enableNormals) {
+      this.normalArray[c + 0] = norm[o1];
+      this.normalArray[c + 1] = norm[o1 + 1];
+      this.normalArray[c + 2] = norm[o1 + 2];
 
-      scope.normalArray[c + 3] = norm[o2];
-      scope.normalArray[c + 4] = norm[o2 + 1];
-      scope.normalArray[c + 5] = norm[o2 + 2];
+      this.normalArray[c + 3] = norm[o2];
+      this.normalArray[c + 4] = norm[o2 + 1];
+      this.normalArray[c + 5] = norm[o2 + 2];
 
-      scope.normalArray[c + 6] = norm[o3];
-      scope.normalArray[c + 7] = norm[o3 + 1];
-      scope.normalArray[c + 8] = norm[o3 + 2];
+      this.normalArray[c + 6] = norm[o3];
+      this.normalArray[c + 7] = norm[o3 + 1];
+      this.normalArray[c + 8] = norm[o3 + 2];
     }
 
     // uvs
 
-    if (scope.enableUvs) {
-      var d = scope.count * 2;
+    if (this.enableUvs) {
+      var d = this.count * 2;
 
-      scope.uvArray[d + 0] = pos[o1];
-      scope.uvArray[d + 1] = pos[o1 + 2];
+      this.uvArray[d + 0] = pos[o1];
+      this.uvArray[d + 1] = pos[o1 + 2];
 
-      scope.uvArray[d + 2] = pos[o2];
-      scope.uvArray[d + 3] = pos[o2 + 2];
+      this.uvArray[d + 2] = pos[o2];
+      this.uvArray[d + 3] = pos[o2 + 2];
 
-      scope.uvArray[d + 4] = pos[o3];
-      scope.uvArray[d + 5] = pos[o3 + 2];
+      this.uvArray[d + 4] = pos[o3];
+      this.uvArray[d + 5] = pos[o3 + 2];
     }
 
     // colors
 
-    if (scope.enableColors) {
-      scope.colorArray[c + 0] = pos[o1];
-      scope.colorArray[c + 1] = pos[o1 + 1];
-      scope.colorArray[c + 2] = pos[o1 + 2];
+    if (this.enableColors) {
+      this.colorArray[c + 0] = pos[o1];
+      this.colorArray[c + 1] = pos[o1 + 1];
+      this.colorArray[c + 2] = pos[o1 + 2];
 
-      scope.colorArray[c + 3] = pos[o2];
-      scope.colorArray[c + 4] = pos[o2 + 1];
-      scope.colorArray[c + 5] = pos[o2 + 2];
+      this.colorArray[c + 3] = pos[o2];
+      this.colorArray[c + 4] = pos[o2 + 1];
+      this.colorArray[c + 5] = pos[o2 + 2];
 
-      scope.colorArray[c + 6] = pos[o3];
-      scope.colorArray[c + 7] = pos[o3 + 1];
-      scope.colorArray[c + 8] = pos[o3 + 2];
+      this.colorArray[c + 6] = pos[o3];
+      this.colorArray[c + 7] = pos[o3 + 1];
+      this.colorArray[c + 8] = pos[o3 + 2];
     }
 
-    scope.count += 3;
+    this.count += 3;
 
-    if (scope.count >= scope.maxCount - 3) {
-      scope.hasPositions = true;
-      if (scope.enableNormals) {
-        scope.hasNormals = true;
+    if (this.count >= this.maxCount - 3) {
+      this.hasPositions = true;
+      if (this.enableNormals) {
+        this.hasNormals = true;
       }
 
-      if (scope.enableUvs) {
-        scope.hasUvs = true;
+      if (this.enableUvs) {
+        this.hasUvs = true;
       }
 
-      if (scope.enableColors) {
-        scope.hasColors = true;
+      if (this.enableColors) {
+        this.hasColors = true;
       }
 
-      renderCallback(scope);
+      renderCallback(this);
     }
   }
 
-  this.begin = function() {
+  begin() {
     this.count = 0;
 
     this.hasPositions = false;
     this.hasNormals = false;
     this.hasUvs = false;
     this.hasColors = false;
-  };
+  }
 
-  this.end = function(renderCallback) {
+  end(renderCallback) {
     if (this.count === 0) return;
 
     for (var i = this.count * 3; i < this.positionArray.length; i++) {
@@ -417,7 +407,7 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
     }
 
     renderCallback(this);
-  };
+  }
 
   /////////////////////////////////////
   // Metaballs
@@ -426,7 +416,7 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
   // Adds a reciprocal ball (nice and blobby) that, to be fast, fades to zero after
   // a fixed distance, determined by strength and subtract.
 
-  this.addBall = function(ballx, bally, ballz, strength, subtract) {
+  addBall(ballx, bally, ballz, strength, subtract) {
     var sign = Math.sign(strength);
     strength = Math.abs(strength);
 
@@ -477,9 +467,9 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
         }
       }
     }
-  };
+  }
 
-  this.addPlaneX = function(strength, subtract) {
+  addPlaneX(strength, subtract) {
     var x,
       y,
       z,
@@ -511,9 +501,9 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
         }
       }
     }
-  };
+  }
 
-  this.addPlaneY = function(strength, subtract) {
+  addPlaneY(strength, subtract) {
     var x,
       y,
       z,
@@ -546,9 +536,9 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
         }
       }
     }
-  };
+  }
 
-  this.addPlaneZ = function(strength, subtract) {
+  addPlaneZ(strength, subtract) {
     var x,
       y,
       z,
@@ -580,13 +570,13 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
         }
       }
     }
-  };
+  }
 
   /////////////////////////////////////
   // Updates
   /////////////////////////////////////
 
-  this.reset = function() {
+  reset() {
     var i;
 
     // wipe the normal cache
@@ -595,9 +585,9 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
       this.normal_cache[i * 3] = 0.0;
       this.field[i] = 0.0;
     }
-  };
+  }
 
-  this.render = function(renderCallback) {
+  render2(renderCallback) {
     if (!this.dirty) {
       this.end(renderCallback);
       return;
@@ -623,15 +613,15 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
           var fx = (x - this.halfsizeX) / this.halfsizeX; //+ 1
           var q = y_offset + x;
 
-          polygonize(fx, fy, fz, q, this.isovalue, renderCallback);
+          this.polygonize(fx, fy, fz, q, this.isovalue, renderCallback);
         }
       }
     }
 
     this.end(renderCallback);
-  };
+  }
 
-  this.generateGeometry = function() {
+  generateGeometry() {
     if (!this.dirty) {
       return;
     }
@@ -682,19 +672,14 @@ var MarchingCubes = function(resolution, material, enableUvs, enableColors, enab
       object.count = 0;
     };
 
-    this.render(geo_callback);
+    this.render2(geo_callback);
 
     // console.log( "generated " + geo.faces.length + " triangles" );
 
     this.dirty = false;
     return geoparent;
-  };
-
-  this.init(resolution, volumeFieldRef);
-};
-
-MarchingCubes.prototype = Object.create(ImmediateRenderObject.prototype);
-MarchingCubes.prototype.constructor = MarchingCubes;
+  }
+}
 
 /////////////////////////////////////
 // Marching cubes lookup tables
