@@ -11,7 +11,7 @@ class ViveController extends Object3D {
 
     // var gamepad;
 
-    this.id = id;
+    this.idInput = id;
     this.axes = [0, 0];
     this.thumbpadIsPressed = false;
     this.triggerIsPressed = false;
@@ -56,7 +56,7 @@ class ViveController extends Object3D {
   }
 
   update() {
-    this.gamepad = this.findGamepad(this.id);
+    this.gamepad = this.findGamepad(this.idInput);
 
     if (this.gamepad !== undefined && this.gamepad.pose !== undefined) {
       if (this.gamepad.pose === null) return; // No user action yet
