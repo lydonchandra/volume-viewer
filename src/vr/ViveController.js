@@ -5,19 +5,24 @@
 
 import { Matrix4, Object3D } from "three";
 
-var ViveController = function(id) {
-  Object3D.call(this);
+class ViveController extends Object3D {
+  constructor(id) {
+    super();
 
-  var scope = this;
-  var gamepad;
+    // var gamepad;
 
-  var axes = [0, 0];
-  var thumbpadIsPressed = false;
-  var triggerIsPressed = false;
-  var gripsArePressed = false;
-  var menuIsPressed = false;
+    this.id = id;
+    this.axes = [0, 0];
+    this.thumbpadIsPressed = false;
+    this.triggerIsPressed = false;
+    this.gripsArePressed = false;
+    this.menuIsPressed = false;
 
-  function findGamepad(id) {
+    this.matrixAutoUpdate = false;
+    this.standingMatrix = new Matrix4();
+  }
+
+  findGamepad(id) {
     // Iterate across gamepads as Vive Controllers may not be
     // in position 0 and 1.
 
@@ -39,78 +44,72 @@ var ViveController = function(id) {
     }
   }
 
-  this.matrixAutoUpdate = false;
-  this.standingMatrix = new Matrix4();
+  getGamepad() {
+    return this.gamepad;
+  }
 
-  this.getGamepad = function() {
-    return gamepad;
-  };
+  getButtonState(button) {
+    if (button === "thumbpad") return this.thumbpadIsPressed;
+    if (button === "trigger") return this.triggerIsPressed;
+    if (button === "grips") return this.gripsArePressed;
+    if (button === "menu") return this.menuIsPressed;
+  }
 
-  this.getButtonState = function(button) {
-    if (button === "thumbpad") return thumbpadIsPressed;
-    if (button === "trigger") return triggerIsPressed;
-    if (button === "grips") return gripsArePressed;
-    if (button === "menu") return menuIsPressed;
-  };
+  update() {
+    this.gamepad = this.findGamepad(this.id);
 
-  this.update = function() {
-    gamepad = findGamepad(id);
-
-    if (gamepad !== undefined && gamepad.pose !== undefined) {
-      if (gamepad.pose === null) return; // No user action yet
+    if (this.gamepad !== undefined && this.gamepad.pose !== undefined) {
+      if (this.gamepad.pose === null) return; // No user action yet
 
       //  Position and orientation.
 
-      var pose = gamepad.pose;
+      var pose = this.gamepad.pose;
 
-      if (pose.position !== null) scope.position.fromArray(pose.position);
-      if (pose.orientation !== null) scope.quaternion.fromArray(pose.orientation);
-      scope.matrix.compose(scope.position, scope.quaternion, scope.scale);
-      scope.matrix.premultiply(scope.standingMatrix);
-      scope.matrixWorldNeedsUpdate = true;
-      scope.visible = true;
+      if (pose.position !== null) this.position.fromArray(pose.position);
+      if (pose.orientation !== null) this.quaternion.fromArray(pose.orientation);
+      this.matrix.compose(this.position, this.quaternion, this.scale);
+      this.matrix.premultiply(this.standingMatrix);
+      this.matrixWorldNeedsUpdate = true;
+      this.visible = true;
 
       //  Thumbpad and Buttons.
 
-      if (axes[0] !== gamepad.axes[0] || axes[1] !== gamepad.axes[1]) {
-        axes[0] = gamepad.axes[0]; //  X axis: -1 = Left, +1 = Right.
-        axes[1] = gamepad.axes[1]; //  Y axis: -1 = Bottom, +1 = Top.
-        scope.dispatchEvent({ type: "axischanged", axes: axes });
+      if (this.axes[0] !== this.gamepad.axes[0] || this.axes[1] !== this.gamepad.axes[1]) {
+        this.axes[0] = this.gamepad.axes[0]; //  X axis: -1 = Left, +1 = Right.
+        this.axes[1] = this.gamepad.axes[1]; //  Y axis: -1 = Bottom, +1 = Top.
+        this.dispatchEvent({ type: "axischanged", axes: this.axes });
       }
 
-      if (thumbpadIsPressed !== gamepad.buttons[0].pressed) {
-        thumbpadIsPressed = gamepad.buttons[0].pressed;
-        scope.dispatchEvent({
-          type: thumbpadIsPressed ? "thumbpaddown" : "thumbpadup",
-          axes: axes,
+      if (this.thumbpadIsPressed !== this.gamepad.buttons[0].pressed) {
+        this.thumbpadIsPressed = this.gamepad.buttons[0].pressed;
+        this.dispatchEvent({
+          type: this.thumbpadIsPressed ? "thumbpaddown" : "thumbpadup",
+          axes: this.axes,
         });
       }
 
-      if (triggerIsPressed !== gamepad.buttons[1].pressed) {
-        triggerIsPressed = gamepad.buttons[1].pressed;
-        scope.dispatchEvent({
-          type: triggerIsPressed ? "triggerdown" : "triggerup",
+      if (this.triggerIsPressed !== this.gamepad.buttons[1].pressed) {
+        this.triggerIsPressed = this.gamepad.buttons[1].pressed;
+        this.dispatchEvent({
+          type: this.triggerIsPressed ? "triggerdown" : "triggerup",
         });
       }
 
-      if (gripsArePressed !== gamepad.buttons[2].pressed) {
-        gripsArePressed = gamepad.buttons[2].pressed;
-        scope.dispatchEvent({
-          type: gripsArePressed ? "gripsdown" : "gripsup",
+      if (this.gripsArePressed !== this.gamepad.buttons[2].pressed) {
+        this.gripsArePressed = this.gamepad.buttons[2].pressed;
+        this.dispatchEvent({
+          type: this.gripsArePressed ? "gripsdown" : "gripsup",
         });
       }
 
-      if (menuIsPressed !== gamepad.buttons[3].pressed) {
-        menuIsPressed = gamepad.buttons[3].pressed;
-        scope.dispatchEvent({ type: menuIsPressed ? "menudown" : "menuup" });
+      if (this.menuIsPressed !== this.gamepad.buttons[3].pressed) {
+        this.menuIsPressed = this.gamepad.buttons[3].pressed;
+        this.dispatchEvent({ type: this.menuIsPressed ? "menudown" : "menuup" });
       }
     } else {
-      scope.visible = false;
+      this.visible = false;
     }
-  };
-};
-
-ViveController.prototype = Object.create(Object3D.prototype);
-ViveController.prototype.constructor = ViveController;
+  }
+}
 
 export default ViveController;
